@@ -1,15 +1,13 @@
 "use client";
 import Image from "next/image";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Menu } from "lucide-react";
+// import { Menu } from "lucide-react";
 import Link from "next/link";
 import { ModeToggle } from "./ToogleDarkMode";
 import { MenuIcon } from "lucide-react";
@@ -62,33 +60,37 @@ const Navbar = () => {
             variant={"outline"}
             className="cursor-pointer bg-orange-500 hover:bg-gray-500  transition"
           >
-            Sign Up
+            <Link href="/register"> Sign Up </Link>
           </Button>
           <Button
             name="btn-signin"
             variant={"outline"}
             className="cursor-pointer bg-orange-400 hover:bg-gray-500 transition"
           >
-            Sign In
+            <Link href="/login">Sign In</Link>
           </Button>
         </div>
 
         {/*Mobile Menu */}
         <div className="button md:hidden flex justify-between gap-3">
-          <Button
-            name="btn-signup"
-            variant={"outline"}
-            className="cursor-pointer hover:text-indigo-500 bg  transition"
-          >
-            Sign Up
-          </Button>
-          <Button
-            name="btn-signin"
-            variant={"outline"}
-            className="cursor-pointer hover:text-indigo-500 transition"
-          >
-            Sign In
-          </Button>
+          <Link href="/register">
+            <Button
+              name="btn-signup"
+              variant={"outline"}
+              className="cursor-pointer hover:text-indigo-500 bg  transition"
+            >
+              Sign Up
+            </Button>
+          </Link>
+          <Link href="/login">
+            <Button
+              name="btn-signin"
+              variant={"outline"}
+              className="cursor-pointer hover:text-indigo-500 transition"
+            >
+              Sign In
+            </Button>
+          </Link>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger className="md:hidden">
