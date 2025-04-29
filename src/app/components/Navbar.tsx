@@ -1,5 +1,11 @@
 "use client";
+
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FC } from "react";
+import { MenuIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,11 +13,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-// import { Menu } from "lucide-react";
-import Link from "next/link";
 import { ModeToggle } from "./ToogleDarkMode";
-import { MenuIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/store/auth";
+
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/events", label: "Events" },
@@ -20,101 +24,118 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
-const Navbar = () => {
+const Navbar: FC = () => {
+  const router = useRouter();
+  const { user, clearAuth } = useAuthStore();
+
+  const logout = () => {
+    clearAuth();
+    router.push("/login");
+  };
+
   return (
-    <nav className=" container m-auto p-4 right-0 left-0">
+    <nav className="fixed container m-auto p-4 z-100 left-0 right-0">
       <div className="flex justify-between items-center">
-        <div className="logo-event ">
-          <Image
-            className="cursor-pointer"
-            src="/assets/header/logo.svg"
-            width={80}
-            height={45}
-            alt="logo"
-            priority
-          />
+        {/* Logo */}
+        <div className="logo-event">
+          <Link href="/">
+            <Image
+              src="/assets/header/logo.svg"
+              width={80}
+              height={45}
+              alt="logo"
+              priority
+              className="cursor-pointer"
+            />
+          </Link>
         </div>
 
-        <div className="hidden md:flex justify-between items-center p-2 gap-6 font-semibold">
-          {navLinks.map((link) => {
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="hover:text-indigo-600 transition"
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-
-          {/* <Link href="/">EventPro</Link>
-          <Link href="/service">Service</Link>
-          <Link href="/about">About</Link>
-          <Link href="/contact">Contact</Link> */}
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-6 font-semibold">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="hover:text-indigo-600 transition"
+            >
+              {link.label}
+            </Link>
+          ))}
         </div>
+
+        {/* Dark Mode Toggle */}
         <ModeToggle />
-        <div className="button hidden md:flex justify-between gap-3">
-          <Button
-            name="btn-signup"
-            variant={"outline"}
-            className="cursor-pointer bg-orange-500 hover:bg-gray-500  transition"
-          >
-            <Link href="/register"> Sign Up </Link>
-          </Button>
-          <Button
-            name="btn-signin"
-            variant={"outline"}
-            className="cursor-pointer bg-orange-400 hover:bg-gray-500 transition"
-          >
-            <Link href="/login">Sign In</Link>
-          </Button>
+
+        {/* Desktop Actions */}
+        <div className="hidden md:flex gap-3">
+          {user ? (
+            <Button
+              variant="outline"
+              className="bg-red-500 text-white hover:bg-red-600"
+              onClick={logout}
+            >
+              Logout
+            </Button>
+          ) : (
+            <>
+              <Button
+                variant="outline"
+                className="bg-orange-500 hover:bg-gray-500"
+              >
+                <Link href="/register">Sign Up</Link>
+              </Button>
+              <Button
+                variant="outline"
+                className="bg-orange-400 hover:bg-gray-500"
+              >
+                <Link href="/login">Sign In</Link>
+              </Button>
+            </>
+          )}
         </div>
 
-        {/*Mobile Menu */}
-        <div className="button md:hidden flex justify-between gap-3">
-          <Link href="/register">
-            <Button
-              name="btn-signup"
-              variant={"outline"}
-              className="cursor-pointer hover:text-indigo-500 bg  transition"
-            >
-              Sign Up
-            </Button>
-          </Link>
-          <Link href="/login">
-            <Button
-              name="btn-signin"
-              variant={"outline"}
-              className="cursor-pointer hover:text-indigo-500 transition"
-            >
-              Sign In
-            </Button>
-          </Link>
-        </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger className="md:hidden">
-            <MenuIcon />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="mt-2">
-            <DropdownMenuSeparator />
-            {navLinks.map((link) => {
-              return (
+        {/* Mobile Menu */}
+        <div className="md:hidden flex items-center gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <MenuIcon />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="mt-2">
+              {navLinks.map((link) => (
                 <DropdownMenuItem key={link.href}>
-                  {" "}
                   <Link
-                    key={link.href}
                     href={link.href}
-                    className="hover:text-indigo-600 transition"
+                    className="hover:text-indigo-600 transition w-full"
                   >
                     {link.label}
-                  </Link>{" "}
+                  </Link>
                 </DropdownMenuItem>
-              );
-            })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        {/* <Button onClick={() => sendGAEvent("cara Jago ngoding", "blog", "EE")}>TEST</Button> */}
+              ))}
+              <DropdownMenuSeparator />
+              {user ? (
+                <DropdownMenuItem
+                  onClick={logout}
+                  className="text-red-500 font-semibold"
+                >
+                  Logout
+                </DropdownMenuItem>
+              ) : (
+                <>
+                  <DropdownMenuItem>
+                    <Link href="/login" className="w-full">
+                      Sign In
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href="/register" className="w-full">
+                      Sign Up
+                    </Link>
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </nav>
   );
