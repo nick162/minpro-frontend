@@ -1,21 +1,21 @@
 "use client";
 
 import { axiosInstance } from "@/lib/axios";
-import { Blog } from "@/types/blog";
+
 import { PageableResponse, PaginationQueries } from "@/types/pagination";
+import { User } from "@/types/user";
 import { useQuery } from "@tanstack/react-query";
 
-interface GetBlogsQuery extends PaginationQueries {
-  search?: string;
-}
+// interface GetBlogsQuery extends PaginationQueries {
+//   search?: string;
+// }
 
-export const useGetBlogs = (queries?: GetBlogsQuery) => {
+export const useGetUserById = (id: number) => {
   return useQuery({
-    queryKey: ["blogs", queries],
+    queryKey: ["user", id],
     queryFn: async () => {
-      const { data } = await axiosInstance.get<PageableResponse<Blog>>(
-        "/blogs",
-        { params: queries }
+      const { data } = await axiosInstance.get<PageableResponse<User>>(
+        `/user/${id}`
       );
       return data;
     },

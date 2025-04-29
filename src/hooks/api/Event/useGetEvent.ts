@@ -1,22 +1,23 @@
 "use client";
 
 import { axiosInstance } from "@/lib/axios";
-import { Blog } from "@/types/blog";
+import { Event } from "@/types/event";
 import { PageableResponse, PaginationQueries } from "@/types/pagination";
 import { useQuery } from "@tanstack/react-query";
 
-interface GetBlogsQuery extends PaginationQueries {
+interface GetEventQuery extends PaginationQueries {
   search?: string;
 }
 
-export const useGetBlogs = (queries?: GetBlogsQuery) => {
+export const useGetEvent = (queries?: GetEventQuery) => {
   return useQuery({
-    queryKey: ["blogs", queries],
+    queryKey: ["event", queries],
     queryFn: async () => {
-      const { data } = await axiosInstance.get<PageableResponse<Blog>>(
-        "/blogs",
-        { params: queries },
+      const { data } = await axiosInstance.get<PageableResponse<Event>>(
+        "/event",
+        { params: queries }
       );
+      // console.log(data);
       return data;
     },
   });
