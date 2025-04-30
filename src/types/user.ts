@@ -4,8 +4,8 @@ export interface User {
   email: string;
   password: string;
   role: string;
-  point: number;
-  coupons: number;
+  point?: number;
+  coupons?: number;
   voucher?: string;
   referralCode: string;
 }

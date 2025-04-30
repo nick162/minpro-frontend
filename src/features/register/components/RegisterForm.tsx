@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 
-import useRegister from "@/hooks/api/auth/useRegister";
-
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { RegisterSchema } from "../schema";
+import { useRegister } from "@/hooks/api/auth/useRegister";
 
 export default function RegisterForm() {
   const [showReferral, setShowReferral] = useState(false);
@@ -24,6 +24,7 @@ export default function RegisterForm() {
       referralCode: "",
       role: "CUSTOMER" as "CUSTOMER" | "EVENT_ORGANIZER",
     },
+    validationSchema: RegisterSchema,
     onSubmit: (values) => {
       const payload = {
         name: values.name,
