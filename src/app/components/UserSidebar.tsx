@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils"; // optional helper untuk styling active link
 
 const navItems = [
-  { href: "/user/dashboard", label: "Dashboard" },
-  { href: "/user/profile", label: "profile" },
+  { href: "/user/setting", label: "Setting" },
+  { href: "/user/profile", label: "Profile" },
 ];
 
 export default function UserSidebar() {

@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ModeToggle } from "./ToogleDarkMode";
 import { useAuthStore } from "@/store/auth";
+import { signOut, useSession } from "next-auth/react";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -26,10 +27,10 @@ const navLinks = [
 
 const Navbar: FC = () => {
   const router = useRouter();
-  const { user, clearAuth } = useAuthStore();
+  const session = useSession();
 
   const logout = () => {
-    clearAuth();
+    signOut();
     router.push("/login");
   };
 
@@ -68,7 +69,7 @@ const Navbar: FC = () => {
 
         {/* Desktop Actions */}
         <div className="hidden md:flex gap-3">
-          {user ? (
+          {session.data?.user ? (
             <Button
               variant="outline"
               className="bg-red-500 text-white hover:bg-red-600"
@@ -112,7 +113,7 @@ const Navbar: FC = () => {
                 </DropdownMenuItem>
               ))}
               <DropdownMenuSeparator />
-              {user ? (
+              {session.data?.user ? (
                 <DropdownMenuItem
                   onClick={logout}
                   className="text-red-500 font-semibold"

@@ -1,5 +1,5 @@
 import { City } from "./city";
-import { Transaction } from "./transcation";
+import { Transaction } from "./transacation";
 import { Review } from "./review";
 import { Ticket } from "./ticket";
 import { Voucher } from "./voucher";
