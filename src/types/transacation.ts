@@ -19,7 +19,7 @@ export interface Transaction {
   status: TransactionStatus;
   uuid: string;
 
-  user?: User;
+  user: User;
   event?: Event;
   transactionDetails?: TransactionDetail[];
   review?: Review | null;

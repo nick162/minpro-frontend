@@ -1,5 +1,4 @@
 import { axiosInstance } from "@/lib/axios";
-import { RegisterPayload } from "@/types/registerPayload";
 import { User } from "@/types/user";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";

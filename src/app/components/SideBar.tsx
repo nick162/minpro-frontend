@@ -10,6 +10,7 @@ const navItems = [
   { href: "/admin/events", label: "Events" },
   { href: "/admin/tickets", label: "Tickets" },
   { href: "/admin/transactions", label: "Transactions" },
+  { href: "/admin/setting", label: "Setting" },
 ];
 
 export default function Sidebar() {

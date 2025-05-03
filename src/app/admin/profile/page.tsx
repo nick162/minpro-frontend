@@ -1,106 +1,137 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
 
-export default function ProfilePage() {
-  const [profileImage, setProfileImage] = useState<File | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
+const ProfilePage = () => {
+  const { data: session } = useSession();
+  const user = session?.user;
+  const token = session?.user.accessToken;
+  console.log("gaga", token);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setProfileImage(file);
-      setPreviewImage(URL.createObjectURL(file));
-    }
-  };
+  if (!user) return <p className="text-center mt-10">Loading...</p>;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-md shadow-md">
-      <h1 className="text-2xl font-bold mb-6">User Profile</h1>
+    <ProtectedRoute allowedRoles="EVENT_ORGANIZER">
+      <div className="max-w-5xl mx-auto px-6 py-10">
+        <h1 className="text-2xl font-semibold mb-6">Welcome, {user.name}</h1>
 
-      {/* Photo Profile */}
-      <div className="flex items-center gap-4 mb-6">
-        <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-200">
-          {previewImage ? (
-            <img
-              src={previewImage}
-              alt="Profile Preview"
-              className="object-cover w-full h-full"
-            />
-          ) : (
-            <div className="flex items-center justify-center w-full h-full text-gray-400">
-              No Image
+        <div className="bg-white shadow-md rounded-2xl p-8">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-4">
+              <Image
+                src={
+                  user?.profilePict && user.profilePict.startsWith("http")
+                    ? user.profilePict
+                    : "/cs-1.png"
+                }
+                alt="Profile Picture"
+                width={64}
+                height={64}
+                className="rounded-full object-cover"
+              />
+              <div>
+                <h2 className="text-lg font-semibold">{user.name}</h2>
+                <p className="text-gray-500 text-sm">{user.email}</p>
+              </div>
             </div>
-          )}
-        </div>
-        <div>
-          <Label htmlFor="photo" className="mb-3">
-            Profile Photo
-          </Label>
-          <Input
-            id="photo"
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
+            <button className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700">
+              <Link href="/user/setting">Edit</Link>
+            </button>
+          </div>
+
+          {/* Form Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm text-gray-600 mb-1">
+                Full Name
+              </label>
+              <input
+                type="text"
+                value={user.name}
+                disabled
+                className="w-full px-4 py-2 bg-gray-100 border border-gray-200 rounded-md"
+              />
+            </div>
+            <div>
+              <label className="block text-sm text-gray-600 mb-1">
+                Username
+              </label>
+              <input
+                type="text"
+                value={user.username}
+                disabled
+                className="w-full px-4 py-2 bg-gray-100 border border-gray-200 rounded-md"
+              />
+            </div>
+            <div>
+              <label className="block text-sm text-gray-600 mb-1">Email</label>
+              <input
+                type="text"
+                value={user.email}
+                disabled
+                className="w-full px-4 py-2 bg-gray-100 border border-gray-200 rounded-md"
+              />
+            </div>
+            <div>
+              <label className="block text-sm text-gray-600 mb-1">
+                Total Point
+              </label>
+              <input
+                type="text"
+                value={user.totalPoint}
+                disabled
+                className="w-full px-4 py-2 bg-gray-100 border border-gray-200 rounded-md"
+              />
+            </div>
+            <div>
+              <label className="block text-sm text-gray-600 mb-1">
+                Referral Code
+              </label>
+              <input
+                type="text"
+                value={user.referralCode}
+                disabled
+                className="w-full px-4 py-2 bg-gray-100 border border-gray-200 rounded-md"
+              />
+            </div>
+            <div>
+              <label className="block text-sm text-gray-600 mb-1">Role</label>
+              <input
+                type="text"
+                value={user.role}
+                disabled
+                className="w-full px-4 py-2 bg-gray-100 border border-gray-200 rounded-md capitalize"
+              />
+            </div>
+          </div>
+
+          {/* Tambahan Email Section */}
+          <div className="mt-10">
+            <h3 className="text-sm font-medium text-gray-600 mb-2">
+              My Email Address
+            </h3>
+            <div className="flex items-center gap-3">
+              <div className="bg-blue-100 text-blue-600 p-2 rounded-full">
+                📧
+              </div>
+              <div>
+                <p className="text-sm">{user.email}</p>
+                <p className="text-xs text-gray-500">1 month ago</p>
+              </div>
+            </div>
+
+            <button className="mt-4 text-blue-600 text-sm hover:underline">
+              + Add Email Address
+            </button>
+          </div>
         </div>
       </div>
-
-      {/* Form Input */}
-      <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <Label htmlFor="name">Name</Label>
-          <Input id="name" placeholder="John Doe" />
-        </div>
-
-        <div>
-          <Label htmlFor="username">Username</Label>
-          <Input id="username" placeholder="johnny123" />
-        </div>
-
-        <div>
-          <Label htmlFor="points">Points</Label>
-          <Input id="points" type="number" placeholder="1000" />
-        </div>
-
-        <div>
-          <Label htmlFor="referralCode">Referral Code</Label>
-          <Input id="referralCode" placeholder="ABCD1234" />
-        </div>
-
-        <div>
-          <Label htmlFor="coupon">Coupon</Label>
-          <Input id="coupon" placeholder="COUPON2024" />
-        </div>
-
-        <div>
-          <Label htmlFor="voucher">Voucher</Label>
-          <Input id="voucher" placeholder="VOUCHER50" />
-        </div>
-
-        <div>
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="john@example.com" />
-        </div>
-
-        <div>
-          <Label htmlFor="role">Role</Label>
-          <Input id="role" placeholder="CUSTOMER or ADMIN" />
-        </div>
-
-        {/* Save Button */}
-        <div className="col-span-1 md:col-span-2 flex justify-end mt-4">
-          <Button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white"
-          >
-            Save Changes
-          </Button>
-        </div>
-      </form>
-    </div>
+    </ProtectedRoute>
   );
-}
+};
+
+export default ProfilePage;

@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/Navbar";
+// import Navbar from "./components/Navbar";
 import NuqsProvider from "@/providers/NuqsProvider";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import { Toaster } from "sonner";
 
 import Footer from "./components/Footer";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import NextAuthProvider from "@/providers/NextAuthProvider";
+import TokenProvider from "@/providers/TokenProvider";
+import NavbarSwitcher from "./components/NavbarSwicther";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,9 +40,13 @@ export default function RootLayout({
         <ReactQueryProvider>
           <NuqsProvider>
             <ThemeProvider>
-              <Navbar />
-              {children}
-              <Footer />
+              <NextAuthProvider>
+                <TokenProvider>
+                  <NavbarSwitcher />
+                  {children}
+                  <Footer />
+                </TokenProvider>
+              </NextAuthProvider>
             </ThemeProvider>
           </NuqsProvider>
         </ReactQueryProvider>

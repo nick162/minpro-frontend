@@ -1,10 +1,13 @@
-export type User = {
+export interface User {
   id: number;
   name: string;
-  email: string;
+  profilePict?: string;
   username: string;
-  profilePict?: string | null;
-  referralCode?: string | null;
-  totalPoint: number;
-  role: "ADMIN" | "USER"; // sesuaikan enum Role kamu
-};
+  email: string;
+  password: string;
+  role: string;
+  totalPoint?: number;
+  coupons?: number;
+  voucher?: string;
+  referralCode: string;
+}
