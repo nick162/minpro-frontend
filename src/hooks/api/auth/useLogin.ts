@@ -1,27 +1,28 @@
-"use client";
-import { axiosInstance } from "@/lib/axios";
-import { useAuthStore } from "@/store/auth";
-import { User } from "@/types/user";
+import { signIn } from "next-auth/react";
 import { useMutation } from "@tanstack/react-query";
-import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const useLogin = () => {
   const router = useRouter();
-  const { onAuthSuccess } = useAuthStore();
+
   return useMutation({
-    mutationFn: async (payload: Pick<User, "username" | "password">) => {
-      const { data } = await axiosInstance.post("/auth/login", payload);
-      return data;
+    mutationFn: async (payload: { username: string; password: string }) => {
+      const res = await signIn("credentials", {
+        ...payload,
+        redirect: false,
+      });
+
+      if (!res?.ok) {
+        throw new Error("Login gagal");
+      }
     },
-    onSuccess: (data) => {
-      toast.success("Login success");
-      onAuthSuccess({ user: data, accessToken: data.accessToken });
+    onSuccess: () => {
+      toast.success("Login berhasil");
       router.push("/");
     },
-    onError: (error: AxiosError<any>) => {
-      toast.error(error.response?.data.massage);
+    onError: (err: any) => {
+      toast.error(err.message || "Gagal login");
     },
   });
 };

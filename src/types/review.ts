@@ -1,4 +1,4 @@
-import { Transaction } from "./transcation";
+import { Transaction } from "./transacation";
 import { Event } from "./event";
 import { User } from "./user";
 

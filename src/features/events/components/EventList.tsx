@@ -14,7 +14,7 @@ const EventList = () => {
 
   const { data: events, isPending } = useGetEvent({
     page,
-    take: 5,
+    take: 2,
     search: debounceSearch,
   });
   //   console.log("ini adalah data blog", events);

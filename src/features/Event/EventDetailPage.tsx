@@ -1,11 +1,11 @@
 "use client";
 import { FC } from "react";
 
-import EventDetailBody from "./components/EventDetailBody";
-
 import useGetEventByslug from "@/hooks/api/Event/useGetEventBySlug";
-import EventDetailHeader from "./components/EventDetailHeader";
+
 import NoData from "@/components/NoData";
+import EventDetailHeader from "./components/EventDetailHeader";
+import EventDetailBody from "./components/EventDetailBody";
 
 interface EventDetailPageProps {
   slug: string;

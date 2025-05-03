@@ -1,4 +1,4 @@
-import { Transaction } from "./transcation";
+import { Transaction } from "./transacation";
 import { Ticket } from "./ticket";
 
 export interface TransactionDetail {

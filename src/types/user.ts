@@ -1,10 +1,12 @@
 export interface User {
+  id: number;
   name: string;
+  profilePict?: string;
   username: string;
   email: string;
   password: string;
   role: string;
-  point?: number;
+  totalPoint?: number;
   coupons?: number;
   voucher?: string;
   referralCode: string;

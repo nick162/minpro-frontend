@@ -7,6 +7,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 const events = [
   {
@@ -39,6 +41,12 @@ const events = [
 ];
 
 const Jumbotron = () => {
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    console.log("Session user:", session?.user);
+    console.log("Access token:", session?.user?.accessToken);
+  }, [session]);
   return (
     <section className="container mx-auto p-4">
       {/* Carousel */}
