@@ -1,118 +1,115 @@
 "use client";
-
-import { TrendingUp } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  Bar,
   BarChart,
-  CartesianGrid,
-  LabelList,
+  Bar,
   XAxis,
   YAxis,
+  Tooltip,
+  ResponsiveContainer,
 } from "recharts";
+import { Eye, Ticket, Gift, Calendar } from "lucide-react";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
+const data = [
+  { month: "Jan", revenue: 1000000 },
+  { month: "Feb", revenue: 6200000 },
+  { month: "Mar", revenue: 3000000 },
+  { month: "Apr", revenue: 6500000 },
 ];
 
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
-  },
-  label: {
-    color: "hsl(var(--background))",
-  },
-} satisfies ChartConfig;
-
-function Dashboard() {
+const DashboardPage = () => {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Bar Chart - Custom Label</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
-          <BarChart
-            accessibilityLayer
-            data={chartData}
-            layout="vertical"
-            margin={{
-              right: 16,
-            }}
-          >
-            <CartesianGrid horizontal={false} />
-            <YAxis
-              dataKey="month"
-              type="category"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
-              hide
-            />
-            <XAxis dataKey="desktop" type="number" hide />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
-            />
-            <Bar
-              dataKey="desktop"
-              layout="vertical"
-              fill="var(--color-desktop)"
-              radius={4}
-            >
-              <LabelList
-                dataKey="month"
-                position="insideLeft"
-                offset={8}
-                className="fill-[--color-label]"
-                fontSize={12}
-              />
-              <LabelList
-                dataKey="desktop"
-                position="right"
-                offset={8}
-                className="fill-foreground"
-                fontSize={12}
-              />
-            </Bar>
-          </BarChart>
-        </ChartContainer>
-      </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
-    </Card>
-  );
-}
+    <div className="p-6 space-y-6">
+      <h1 className="text-2xl font-bold">Dashboard</h1>
 
-export default Dashboard;
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card className="relative">
+          <CardHeader className="flex items-center justify-between">
+            <CardTitle>Total Revenue</CardTitle>
+            <Eye className="w-4 h-4 text-gray-400" />
+          </CardHeader>
+          <CardContent className="text-2xl font-semibold">
+            *** *** *** ***
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Total Events</CardTitle>
+          </CardHeader>
+          <CardContent className="text-2xl font-semibold">+5</CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex items-center justify-between">
+            <CardTitle>Total Tickets</CardTitle>
+            <Ticket className="w-4 h-4 text-gray-400" />
+          </CardHeader>
+          <CardContent className="text-2xl font-semibold">+8</CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Total Vouchers</CardTitle>
+          </CardHeader>
+          <CardContent className="text-2xl font-semibold">+1</CardContent>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card className="col-span-2">
+          <CardHeader className="flex items-center justify-between">
+            <CardTitle>Overview</CardTitle>
+            <select className="text-sm border rounded px-2 py-1">
+              <option>2025</option>
+              <option>2024</option>
+            </select>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={data}>
+                <XAxis dataKey="month" stroke="#888888" />
+                <YAxis stroke="#888888" />
+                <Tooltip />
+                <Bar dataKey="revenue" fill="#EA7B27" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Recent Sales</CardTitle>
+            <p className="text-sm text-muted-foreground">
+              You have made 12 sales so far.
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {[
+              { name: "Budi Jancok", email: "budi@mail.com", amount: 700000 },
+              { name: "Budi Jancok", email: "budi@mail.com", amount: 4000000 },
+              { name: "joko jancok", email: "joko@mail.com", amount: 400000 },
+              { name: "joko jancok", email: "joko@mail.com", amount: 250000 },
+              { name: "Budi Jancok", email: "budi@mail.com", amount: 1000000 },
+            ].map((sale, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-between text-sm"
+              >
+                <div>
+                  <p className="font-medium">{sale.name}</p>
+                  <p className="text-gray-500">{sale.email}</p>
+                </div>
+                <p className="font-semibold text-right">
+                  +Rp {sale.amount.toLocaleString()}
+                </p>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+export default DashboardPage;
