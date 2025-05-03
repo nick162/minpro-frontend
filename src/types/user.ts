@@ -1,11 +1,10 @@
-export interface User {
+export type User = {
+  id: number;
   name: string;
-  username: string;
   email: string;
-  password: string;
-  role: string;
-  point?: number;
-  coupons?: number;
-  voucher?: string;
-  referralCode: string;
-}
+  username: string;
+  profilePict?: string | null;
+  referralCode?: string | null;
+  totalPoint: number;
+  role: "ADMIN" | "USER"; // sesuaikan enum Role kamu
+};

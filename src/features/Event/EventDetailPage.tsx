@@ -2,7 +2,6 @@
 import { FC } from "react";
 
 import EventDetailBody from "./components/EventDetailBody";
-
 import useGetEventByslug from "@/hooks/api/Event/useGetEventBySlug";
 import EventDetailHeader from "./components/EventDetailHeader";
 import NoData from "@/components/NoData";
@@ -12,14 +11,15 @@ interface EventDetailPageProps {
 }
 
 const EventDetailPage: FC<EventDetailPageProps> = ({ slug }) => {
-  const { data: event, isPending } = useGetEventByslug(slug);
-  console.log(event);
+  const { data: event, isLoading, isError } = useGetEventByslug(slug);
 
-  if (isPending) {
+  // Check if it's still loading
+  if (isLoading) {
     return <h1 className="text-center">Loading...</h1>;
   }
 
-  if (!event) {
+  // Check if the data couldn't be fetched
+  if (isError || !event) {
     return <NoData />;
   }
 
