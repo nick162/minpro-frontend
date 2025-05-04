@@ -8,7 +8,7 @@ import Link from "next/link";
 const ProfilePage = () => {
   const { data: session } = useSession();
   const user = session?.user;
-
+  console.log(user);
   if (!user) return <p className="text-center mt-10">Loading...</p>;
 
   return (

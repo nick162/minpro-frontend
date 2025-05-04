@@ -8,13 +8,14 @@ import ProfilePasswordInput from "./ProfilePasswordInput";
 import ProfileImageInput from "./ProfileImageInput";
 import { updateProfileSchema } from "../schema";
 import { useUpdateProfile } from "@/app/user/api/useUpdateProfile";
+import { Button } from "@/components/ui/button";
 
 // pastikan path-nya benar
 
 const ProfileForm = () => {
   const { data: session } = useSession();
   const user = session?.user;
-  const { mutate: updateProfile } = useUpdateProfile();
+  const { mutate: updateProfile, isPending } = useUpdateProfile();
 
   const [previewImage, setPreviewImage] = useState<string | null>(
     user?.profilePict || null
@@ -89,12 +90,13 @@ const ProfileForm = () => {
         onChange={formik.handleChange}
       />
 
-      <button
+      <Button
+        disabled={isPending}
         type="submit"
         className="w-full py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
       >
         Simpan Perubahan
-      </button>
+      </Button>
     </form>
   );
 };

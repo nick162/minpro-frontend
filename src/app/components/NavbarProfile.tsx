@@ -4,11 +4,26 @@ import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
+import { useSession } from "next-auth/react";
 
 const AdminNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session, status } = useSession(); // status penting
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+
+  if (status === "loading") {
+    return null; // Atau tampilkan spinner/loading sementara
+  }
+
+  const role = session?.user?.role;
+
+  const filteredNavLinks = navLinks.filter((link) => {
+    if (role === "CUSTOMER") {
+      return link.href.includes("settings") || link.href.includes("profile");
+    }
+    return true;
+  });
 
   return (
     <nav className="bg-white border-b shadow-sm px-6 py-4 relative z-50">
@@ -22,13 +37,13 @@ const AdminNavbar = () => {
             height={40}
           />
           <h1 className="text-xl font-bold text-blue-700 tracking-wide">
-            INDOEVENTHUB
+            <Link href="/"> INDOEVENTHUB </Link>
           </h1>
         </div>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex space-x-6">
-          {navLinks.map(({ label, href }) => (
+          {filteredNavLinks.map(({ label, href }) => (
             <Link
               key={href}
               href={href}
@@ -52,7 +67,7 @@ const AdminNavbar = () => {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden mt-4 space-y-3 bg-gray-50 rounded-lg shadow-md px-4 py-3">
-          {navLinks.map(({ label, href }) => (
+          {filteredNavLinks.map(({ label, href }) => (
             <Link
               key={href}
               href={href}
@@ -68,12 +83,14 @@ const AdminNavbar = () => {
   );
 };
 
+// Semua menu
 const navLinks = [
   { label: "Dashboard", href: "/admin/dashboard" },
   { label: "Events", href: "/admin/events" },
   { label: "Users", href: "/admin/users" },
   { label: "Transactions", href: "/admin/transactions" },
   { label: "Settings", href: "/admin/settings" },
+  { label: "Profile", href: "/admin/profile" }, // pastikan ada menu profile juga
 ];
 
 export default AdminNavbar;

@@ -1,10 +1,5 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { FC } from "react";
-import { MenuIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,9 +8,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ModeToggle } from "./ToogleDarkMode";
-import { useAuthStore } from "@/store/auth";
+import { MenuIcon } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FC } from "react";
+import { ModeToggle } from "./ToogleDarkMode";
 
 const navLinks = [
   { href: "/", label: "Home" },
