@@ -1,4 +1,3 @@
-// File: @/app/admin/events/page.tsx
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -10,9 +9,11 @@ import { useGetEvent } from "@/hooks/api/Event/useGetEvent";
 import { Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
+import useDeleteEvent from "@/hooks/api/Event/useDeleteEvent";
 
 export default function EventPage() {
   const { data, isLoading, isError } = useGetEvent();
+  const { mutateAsync: deleteEvent, isPending } = useDeleteEvent();
   const session = useSession();
 
   console.log("ini adalah", session.data?.user.role);
@@ -28,14 +29,18 @@ export default function EventPage() {
       : format(parsedDate, "dd MMM yyyy");
   };
 
-  // Fungsi delete (contoh: tambahkan request ke backend)
-  const handleDelete = (id: number) => {
+  // Fixed delete function to use the deleteEvent mutation
+  const handleDelete = async (id: number) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this event?"
     );
     if (confirmed) {
-      // TODO: Tambahkan request delete ke backend
-      console.log(`Deleting event ID: ${id}`);
+      try {
+        await deleteEvent(id);
+        // The rest is handled in the onSuccess callback of the mutation
+      } catch (error) {
+        console.error("Error deleting event:", error);
+      }
     }
   };
 
@@ -105,8 +110,16 @@ export default function EventPage() {
                     <Button
                       variant="destructive"
                       onClick={() => handleDelete(event.id)}
+                      disabled={isPending}
                     >
-                      Delete
+                      {isPending ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Deleting...
+                        </>
+                      ) : (
+                        "Delete"
+                      )}
                     </Button>
                   </div>
                 </div>
