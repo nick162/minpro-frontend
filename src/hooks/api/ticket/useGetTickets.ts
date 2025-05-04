@@ -1,22 +1,19 @@
 // hooks/api/Ticket/useGetTickets.ts
+"use client";
 
 import { axiosInstance } from "@/lib/axios";
-import { useQuery } from "@tanstack/react-query";
 import { Ticket } from "@/types/ticket";
+import { useQuery } from "@tanstack/react-query";
 
-// Fetcher function
-export const fetchTicketsByEventId = async (
-  eventId: number
-): Promise<Ticket[]> => {
-  const { data } = await axiosInstance.get(`/event/${eventId}/tickets`);
-  return data;
-};
-
-// Custom hook
-export const useGetTickets = (eventId: number) => {
-  return useQuery<Ticket[], Error>({
-    queryKey: ["event-tickets", eventId],
-    queryFn: () => fetchTicketsByEventId(eventId),
-    enabled: !!eventId,
+export const useGetTickets = () => {
+  return useQuery({
+    queryKey: ["tickets"],
+    queryFn: async () => {
+      const { data } = await axiosInstance.get<{
+        message: string;
+        tickets: Ticket[];
+      }>("/ticket");
+      return data.tickets;
+    },
   });
 };
