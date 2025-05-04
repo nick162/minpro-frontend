@@ -14,6 +14,7 @@ import useGetEventBySlug from "@/hooks/api/Event/useGetEventBySlug";
 import Loading from "@/components/Loading";
 import NoData from "@/components/NoData";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import useAxios from "@/hooks/useAxios";
 
 interface EditEventProps {
   slug: string;
@@ -21,6 +22,7 @@ interface EditEventProps {
 
 const EventForm: FC<EditEventProps> = ({ slug }) => {
   // const session = useSession();
+  useAxios();
   const { data: event, isPending: isPendingGetEvent } = useGetEventBySlug(slug);
   console.log("ini adalah", event);
   const { mutateAsync: eventUpdated, isPending: isPending } = useUpdateEvent(
