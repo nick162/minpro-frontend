@@ -1,31 +1,15 @@
 import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { axiosInstance } from "@/lib/axios"; // pastikan import axiosInstance atau pakai fetch
-
+import Credentials from "next-auth/providers/credentials";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        username: {},
-        password: {},
-      },
-      async authorize(credentials) {
-        try {
-          const { data } = await axiosInstance.post("/auth/login", {
-            username: credentials?.username,
-            password: credentials?.password,
-          });
-
-          if (data) return data; // data = user + accessToken
-          return null;
-        } catch (error) {
-          console.error("Authorize error", error);
-          return null;
-        }
+    Credentials({
+      async authorize(user) {
+        if (user) return user;
+        return null;
       },
     }),
   ],
+
   session: {
     strategy: "jwt",
     maxAge: 2 * 60 * 60,
@@ -35,16 +19,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     error: "/error",
   },
   callbacks: {
+    async signIn() {
+      return true;
+    },
     async jwt({ token, user }) {
-      if (user) {
-        token.user = user; // <- simpan user dan accessToken ke dalam token
-      }
+      if (user) token.user = user;
       return token;
     },
     async session({ session, token }: any) {
-      if (token.user) {
-        session.user = token.user;
-      }
+      if (token.user) session.user = token.user;
       return session;
     },
   },

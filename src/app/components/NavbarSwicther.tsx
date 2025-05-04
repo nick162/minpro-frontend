@@ -10,7 +10,7 @@ export default function NavbarSwitcher() {
   const pathname = usePathname();
 
   const isAdminPage =
-    pathname.startsWith("/admin") || pathname.startsWith("/profile");
+    pathname.startsWith("/admin") || pathname.startsWith("/user");
 
   return isAdminPage ? <AdminNavbar /> : <Navbar />;
 }

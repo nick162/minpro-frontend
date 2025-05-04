@@ -11,7 +11,6 @@ interface EventHeaderProps {
 
 const EventDetailHeader: FC<EventHeaderProps> = ({ event }) => {
   console.log("ini adalah event", event);
-  const { user } = useAuthStore();
 
   const getFormattedDate = (date: unknown): string => {
     if (!date || (typeof date !== "string" && !(date instanceof Date))) {

@@ -4,6 +4,7 @@ import useAxios from "@/hooks/useAxios";
 import { Event } from "@/types/event";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -12,6 +13,7 @@ interface Payload extends Omit<Event, "thumbnail"> {
 }
 
 const useUpdateEvent = (id?: number) => {
+  const session = useSession();
   const router = useRouter();
   const queryClient = useQueryClient();
   const { axiosInstance } = useAxios();
@@ -28,25 +30,32 @@ const useUpdateEvent = (id?: number) => {
         thumbnail,
       } = payload;
 
-      const formData = new FormData();
-      if (eventName) formData.append("name", eventName);
-      if (description) formData.append("description", description);
-      if (category) formData.append("category", category);
-      if (cityId) formData.append("cityId", String(cityId));
-      if (startDate) formData.append("startDate", startDate.toString());
-      if (endDate) formData.append("endDate", endDate.toString());
-      if (thumbnail) formData.append("thumbnail", thumbnail);
+      const eventUpdated = new FormData();
+      if (eventName) eventUpdated.append("eventName", eventName);
+      if (description) eventUpdated.append("description", description);
+      if (category) eventUpdated.append("category", category);
+      if (cityId) eventUpdated.append("cityId", String(cityId));
+      if (startDate)
+        eventUpdated.append("startDate", new Date(startDate).toISOString());
+      if (endDate)
+        eventUpdated.append("endDate", new Date(endDate).toISOString());
+      if (thumbnail) eventUpdated.append("thumbnail", thumbnail);
 
       if (!id) throw new Error("Event ID is required");
 
-      const { data } = await axiosInstance.patch(`/events/${id}`, formData);
+      const { data } = await axiosInstance.patch(`/event/${id}`, eventUpdated, {
+        headers: {
+          Authorization: `Bearer ${session.data?.user.accessToken}`, // ini penting!
+          "Content-Type": "multipart/form-data",
+        },
+      });
       return data;
     },
 
     onSuccess: async () => {
       toast.success("Event updated successfully");
-      await queryClient.invalidateQueries({ queryKey: ["events"] });
-      router.push("/events"); // or wherever your list page is
+      await queryClient.invalidateQueries({ queryKey: ["event"] });
+      router.push("/admin/events"); // or wherever your list page is
     },
 
     onError: (error: AxiosError<any>) => {

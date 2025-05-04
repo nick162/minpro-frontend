@@ -6,8 +6,8 @@ import { useSession } from "next-auth/react";
 
 const ProfileSettingPage = () => {
   const session = useSession();
-  console.log("jjs", session.data?.user.accessToken);
-  console.log("jjs", session.data?.user.role);
+  // console.log("jjs", session.data?.user.accessToken);
+  // console.log("jjs", session.data?.user.role);
   return (
     <ProtectedRoute allowedRoles="EVENT_ORGANIZER">
       <div className="max-w-xl mx-auto mt-10">

@@ -9,9 +9,13 @@ import { Event } from "@/types/event";
 import { useGetEvent } from "@/hooks/api/Event/useGetEvent";
 import { Loader2 } from "lucide-react";
 import { format } from "date-fns";
+import { useSession } from "next-auth/react";
 
 export default function EventPage() {
   const { data, isLoading, isError } = useGetEvent();
+  const session = useSession();
+
+  console.log("ini adalah", session.data?.user.role);
 
   const getFormattedDate = (date: unknown): string => {
     if (!date || (typeof date !== "string" && !(date instanceof Date))) {
@@ -92,7 +96,7 @@ export default function EventPage() {
                   </p>
 
                   <div className="flex gap-2 mt-4">
-                    <Link href={`/admin/events/edit/${event.id}`}>
+                    <Link href={`/admin/events/edit/${event.slug}`}>
                       <Button className="bg-yellow-500 hover:bg-yellow-600">
                         Edit
                       </Button>
