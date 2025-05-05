@@ -78,22 +78,6 @@ export default function RegisterForm() {
               </div>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                name="email"
-                placeholder="m@example.com"
-                required
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {!!formik.touched.email && !!formik.errors.email && (
-                <p className="text-xs text-red-500">{formik.errors.email}</p>
-              )}
-            </div>
-            <div className="grid gap-2">
               <Label htmlFor="username">Username</Label>
               <Input
                 id="username"
@@ -105,6 +89,22 @@ export default function RegisterForm() {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
+              <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  name="email"
+                  placeholder="m@example.com"
+                  required
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {!!formik.touched.email && !!formik.errors.email && (
+                  <p className="text-xs text-red-500">{formik.errors.email}</p>
+                )}
+              </div>
               {!!formik.touched.username && !!formik.errors.username && (
                 <p className="text-xs text-red-500">{formik.errors.username}</p>
               )}

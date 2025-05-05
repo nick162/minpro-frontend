@@ -5,25 +5,17 @@ import Link from "next/link";
 import { axiosInstance } from "@/lib/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useGetTickets } from "@/hooks/api/ticket/useGetTickets";
+import useDeleteTicket from "@/hooks/api/ticket/useDeleteTicket";
 
 export default function TicketPage() {
   const { data: tickets, isLoading, isError } = useGetTickets();
-  const queryClient = useQueryClient();
-
-  const deleteTicket = useMutation({
-    mutationFn: async (id: number) => {
-      await axiosInstance.delete(`/ticket/${id}`);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tickets"] });
-    },
-  });
+  const { mutateAsync: deleteTicket, isPending } = useDeleteTicket();
 
   const handleDelete = (id: number) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this ticket?"
     );
-    if (confirmed) deleteTicket.mutate(id);
+    if (confirmed) deleteTicket(id);
   };
 
   if (isLoading) return <p>Loading...</p>;
@@ -60,7 +52,7 @@ export default function TicketPage() {
 
             <div className="flex gap-2 mt-4">
               <Link href={`/admin/tickets/edit/${ticket.id}`}>
-                <Button className="bg-yellow-500 hover:bg-yellow-600">
+                <Button className="bg-yellow-500 hover:bg-yellow-600 cursor-pointer">
                   Edit
                 </Button>
               </Link>
@@ -68,9 +60,10 @@ export default function TicketPage() {
               <Button
                 variant="destructive"
                 onClick={() => handleDelete(ticket.id)}
-                disabled={deleteTicket.isPending}
+                disabled={isPending}
+                className="cursor-pointer"
               >
-                {deleteTicket.isPending ? "Deleting..." : "Delete"}
+                {isPending ? "Deleting..." : "Delete"}
               </Button>
             </div>
           </div>

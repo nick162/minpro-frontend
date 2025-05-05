@@ -4,7 +4,6 @@ import useAxios from "@/hooks/useAxios";
 import { Event } from "@/types/event";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -13,7 +12,6 @@ interface Payload extends Omit<Event, "thumbnail"> {
 }
 
 const useUpdateEvent = (id?: number) => {
-  const session = useSession();
   const router = useRouter();
   const queryClient = useQueryClient();
   const { axiosInstance } = useAxios();
@@ -43,12 +41,7 @@ const useUpdateEvent = (id?: number) => {
 
       if (!id) throw new Error("Event ID is required");
 
-      const { data } = await axiosInstance.patch(`/event/${id}`, eventUpdated, {
-        headers: {
-          Authorization: `Bearer ${session.data?.user.accessToken}`, // ini penting!
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const { data } = await axiosInstance.patch(`/event/${id}`, eventUpdated);
       return data;
     },
 

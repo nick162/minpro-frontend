@@ -1,4 +1,4 @@
-import EventDetailPage from "@/features/event/EventDetailPage";
+import EventDetailPage from "@/features/event/getDetail/EventDetailPage";
 
 const EventDetail = async ({
   params,

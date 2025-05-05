@@ -6,39 +6,66 @@ import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-interface CreateBlogPayload {
-  title: string;
-  category: string;
+// Response sukses dari server
+type CreateEventResponse = {
+  message: string;
+  event: any;
+};
+
+// Response error dari server
+type ErrorResponse = {
+  message: string;
+};
+
+// Tipe data form
+interface FormValues {
+  eventName: string;
   description: string;
+  category: string;
+  startDate: string;
+  endDate: string;
+  cityId: string;
   thumbnail: File | null;
-  content: string;
 }
 
-const useCreateBlog = () => {
+// Hook untuk create event
+const useCreateEvent = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: async (payload: CreateBlogPayload) => {
-      const createBlogFrom = new FormData();
 
-      createBlogFrom.append("title", payload.title);
-      createBlogFrom.append("category", payload.category);
-      createBlogFrom.append("description", payload.description);
-      createBlogFrom.append("content", payload.content);
-      createBlogFrom.append("thumbnail", payload.thumbnail!);
+  return useMutation<
+    CreateEventResponse,
+    AxiosError<ErrorResponse>,
+    FormValues
+  >({
+    mutationFn: async (values: FormValues) => {
+      const formData = new FormData();
+      formData.append("eventName", values.eventName);
+      formData.append("description", values.description);
+      formData.append("category", values.category);
+      formData.append("startDate", values.startDate);
+      formData.append("endDate", values.endDate);
+      formData.append("cityId", values.cityId);
+      if (values.thumbnail) {
+        formData.append("thumbnail", values.thumbnail);
+      }
 
-      const { data } = await axiosInstance.post("/blogs", createBlogFrom);
+      const { data } = await axiosInstance.post<CreateEventResponse>(
+        "/api/events",
+        formData
+      );
       return data;
     },
-    onSuccess: async () => {
-      toast.success("Write a blog Success");
-      await queryClient.invalidateQueries({ queryKey: ["blogs"] });
-      router.push("/");
+    onSuccess: () => {
+      toast.success("Event created successfully");
+      queryClient.invalidateQueries({ queryKey: ["events"] });
+      router.push("/admin/events");
     },
-    onError: (error: AxiosError<any>) => {
-      toast.error(error.response?.data.message);
+    onError: (error) => {
+      const message = error.response?.data?.message || error.message;
+      toast.error(message);
     },
   });
 };
 
-export default useCreateBlog;
+export default useCreateEvent;

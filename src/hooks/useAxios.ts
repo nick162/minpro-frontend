@@ -30,8 +30,11 @@ const useAxios = () => {
         return response;
       },
       (err) => {
-        if (err?.response.status === 401) {
-          // clearAuth();
+        if (
+          err?.response.data.message === "Token expired" ||
+          err?.response.data.message === "Token is missing" ||
+          err?.response.data.message === "Invalid Token"
+        ) {
           signOut();
         }
 
