@@ -1,13 +1,16 @@
+// hooks/api/transaction/useWaitingTransaction.ts
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/axios";
 import { Transaction } from "@/types/transacation";
+import useAxios from "@/hooks/useAxios";
 
 export const useWaitingTransactions = () => {
-  return useQuery({
+  useAxios();
+  return useQuery<Transaction[]>({
     queryKey: ["waiting-transactions"],
-    queryFn: async (): Promise<Transaction[]> => {
-      const { data } = await axiosInstance.get("/transaction/waiting");
-      return data;
+    queryFn: async () => {
+      const res = await axiosInstance.get("/transaction/waiting");
+      return res.data.data; // ✅ akses data langsung
     },
   });
 };
