@@ -77,31 +77,38 @@ const EventDetailBody: React.FC<EventDetailBodyProps> = ({ event }) => {
             <TabsContent value="tickets">
               <div className="space-y-4 mt-4">
                 {event.tickets?.length ? (
-                  event.tickets.map((ticket) => (
-                    <Card
-                      key={ticket.id}
-                      onClick={() => setSelectedTicket(ticket)}
-                      className={`cursor-pointer transition bg-zinc-900 border ${
-                        selectedTicket?.id === ticket.id
-                          ? "border-orange-500 ring-1 ring-orange-400"
-                          : "border-zinc-700"
-                      }`}
-                    >
-                      <CardContent className="p-4 flex justify-between items-center text-white">
-                        <div>
-                          <p className="font-semibold">{ticket.ticketType}</p>
-                          <p className="text-xs text-gray-400">
-                            {ticket.availableSeats > 0
-                              ? `${ticket.availableSeats} kursi tersedia`
-                              : "Sold Out"}
-                          </p>
-                        </div>
-                        <p className="font-bold text-orange-400">
-                          Rp{ticket.price.toLocaleString("id-ID")}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  ))
+                  event.tickets.map(
+                    (ticket) => (
+                      console.log("entenet", ticket),
+                      (
+                        <Card
+                          key={ticket.id}
+                          onClick={() => setSelectedTicket(ticket)}
+                          className={`cursor-pointer transition bg-zinc-900 border ${
+                            selectedTicket?.id === ticket.id
+                              ? "border-orange-500 ring-1 ring-orange-400"
+                              : "border-zinc-700"
+                          }`}
+                        >
+                          <CardContent className="p-4 flex justify-between items-center text-white">
+                            <div>
+                              <p className="font-semibold">
+                                {ticket.ticketType}
+                              </p>
+                              <p className="text-xs text-gray-400">
+                                {ticket.availableSeats > 0
+                                  ? `${ticket.availableSeats} kursi tersedia`
+                                  : "Sold Out"}
+                              </p>
+                            </div>
+                            <p className="font-bold text-orange-400">
+                              Rp{ticket.price.toLocaleString("id-ID")}
+                            </p>
+                          </CardContent>
+                        </Card>
+                      )
+                    )
+                  )
                 ) : (
                   <p>Belum ada tiket tersedia.</p>
                 )}

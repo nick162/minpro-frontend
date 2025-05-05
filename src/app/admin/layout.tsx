@@ -7,16 +7,12 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 const AdminLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <ProtectedRoute allowedRoles="EVENT_ORGANIZER">
-      <div className="flex min-h-screen">
-        <Sidebar />
-        <main className="flex-1 p-6 bg-gray-100">
-          <NextAuthProvider>
-            <TokenProvider>{children}</TokenProvider>
-          </NextAuthProvider>
-        </main>
-      </div>
-    </ProtectedRoute>
+    // <ProtectedRoute allowedRoles="EVENT_ORGANIZER">
+    <div className="flex min-h-screen">
+      <Sidebar />
+      <main className="flex-1 p-6 bg-gray-100">{children}</main>
+    </div>
+    // </ProtectedRoute>
   );
 };
 

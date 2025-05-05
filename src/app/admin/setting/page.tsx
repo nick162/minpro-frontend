@@ -9,13 +9,13 @@ const ProfileSettingPage = () => {
   // console.log("jjs", session.data?.user.accessToken);
   // console.log("jjs", session.data?.user.role);
   return (
-    <ProtectedRoute allowedRoles="EVENT_ORGANIZER">
-      <div className="max-w-xl mx-auto mt-10">
-        <h1 className="text-2xl font-bold mb-6">Edit Profil</h1>
-        <ProfilePage />
-      </div>
-      //{" "}
-    </ProtectedRoute>
+    // <ProtectedRoute allowedRoles="EVENT_ORGANIZER">
+    <div className="max-w-xl mx-auto mt-10">
+      <h1 className="text-2xl font-bold mb-6">Edit Profil</h1>
+      <ProfilePage />
+    </div>
+    //{" "}
+    // </ProtectedRoute>
   );
 };
 

@@ -3,26 +3,21 @@
 import { useFormik } from "formik";
 import { FC, useState } from "react";
 
-import { Button } from "@/components/ui/button";
-import useUpdateEvent from "@/hooks/api/Event/useUpdateEvent";
-import { updateEventSchema } from "../../form-event/schema";
-import EventImageInput from "../../form-event/components/eventImagInput";
-import EventInput from "../../form-event/components/eventInput";
-import EventDateInput from "../../form-event/components/eventDateInput";
-import { useSession } from "next-auth/react";
-import useGetEventBySlug from "@/hooks/api/Event/useGetEventBySlug";
 import Loading from "@/components/Loading";
 import NoData from "@/components/NoData";
-import { ProtectedRoute } from "@/components/ProtectedRoute";
-import useAxios from "@/hooks/useAxios";
+import { Button } from "@/components/ui/button";
+import useGetEventBySlug from "@/hooks/api/Event/useGetEventBySlug";
+import useUpdateEvent from "@/hooks/api/Event/useUpdateEvent";
+import EventDateInput from "../../form-event/components/eventDateInput";
+import EventImageInput from "../../form-event/components/eventImagInput";
+import EventInput from "../../form-event/components/eventInput";
+import { updateEventSchema } from "../../form-event/schema";
 
 interface EditEventProps {
   slug: string;
 }
 
 const EventForm: FC<EditEventProps> = ({ slug }) => {
-  // const session = useSession();
-  useAxios();
   const { data: event, isPending: isPendingGetEvent } = useGetEventBySlug(slug);
   console.log("ini adalah", event);
   const { mutateAsync: eventUpdated, isPending: isPending } = useUpdateEvent(
@@ -84,56 +79,56 @@ const EventForm: FC<EditEventProps> = ({ slug }) => {
     return <NoData />;
   }
   return (
-    <ProtectedRoute allowedRoles="EVENT_ORGANIZER">
-      <form
-        onSubmit={formik.handleSubmit}
-        className="space-y-5 max-w-xl mx-auto mt-8"
-        encType="multipart/form-data"
+    // <ProtectedRoute allowedRoles="EVENT_ORGANIZER">
+    <form
+      onSubmit={formik.handleSubmit}
+      className="space-y-5 max-w-xl mx-auto mt-8"
+      encType="multipart/form-data"
+    >
+      <EventImageInput
+        previewImage={previewImage}
+        handleFileChange={handleFileChange}
+      />
+
+      <EventInput
+        label="Nama Event"
+        name="eventName"
+        value={formik.values.eventName}
+        error={getErrorString(formik.errors.eventName)}
+        onChange={formik.handleChange}
+      />
+
+      <EventInput
+        label="Deskripsi"
+        name="description"
+        value={formik.values.description}
+        error={getErrorString(formik.errors.description)}
+        onChange={formik.handleChange}
+      />
+      <EventInput
+        label="Category"
+        name="category"
+        value={formik.values.category}
+        error={getErrorString(formik.errors.category)}
+        onChange={formik.handleChange}
+      />
+
+      <EventDateInput
+        startDate={formik.values.startDate}
+        endDate={formik.values.endDate}
+        errors={getFlatErrors(formik.errors.startDate)}
+        handleChange={formik.handleChange}
+      />
+
+      <Button
+        disabled={isPending}
+        type="submit"
+        className="w-full py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition cursor-pointer"
       >
-        <EventImageInput
-          previewImage={previewImage}
-          handleFileChange={handleFileChange}
-        />
-
-        <EventInput
-          label="Nama Event"
-          name="eventName"
-          value={formik.values.eventName}
-          error={getErrorString(formik.errors.eventName)}
-          onChange={formik.handleChange}
-        />
-
-        <EventInput
-          label="Deskripsi"
-          name="description"
-          value={formik.values.description}
-          error={getErrorString(formik.errors.description)}
-          onChange={formik.handleChange}
-        />
-        <EventInput
-          label="Category"
-          name="category"
-          value={formik.values.category}
-          error={getErrorString(formik.errors.category)}
-          onChange={formik.handleChange}
-        />
-
-        <EventDateInput
-          startDate={formik.values.startDate}
-          endDate={formik.values.endDate}
-          errors={getFlatErrors(formik.errors.startDate)}
-          handleChange={formik.handleChange}
-        />
-
-        <Button
-          disabled={isPending}
-          type="submit"
-          className="w-full py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition cursor-pointer"
-        >
-          Simpan Perubahan
-        </Button>
-      </form>
-    </ProtectedRoute>
+        Simpan Perubahan
+      </Button>
+    </form>
+    // </ProtectedRoute>
   );
 };
 

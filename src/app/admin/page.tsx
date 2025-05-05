@@ -1,5 +1,3 @@
-import { redirect } from "next/navigation";
-
 export default function AdminHome() {
-  redirect("/admin/dashboard");
+  return <h1>Admin</h1>;
 }
