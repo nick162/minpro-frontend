@@ -8,10 +8,10 @@ import NoData from "@/components/NoData";
 import { Button } from "@/components/ui/button";
 import useGetEventBySlug from "@/hooks/api/Event/useGetEventBySlug";
 import useUpdateEvent from "@/hooks/api/Event/useUpdateEvent";
-import EventDateInput from "../../form-event/components/eventDateInput";
-import EventImageInput from "../../form-event/components/eventImagInput";
-import EventInput from "../../form-event/components/eventInput";
-import { updateEventSchema } from "../../form-event/schema";
+import EventDateInput from "./components/eventDateInput";
+import EventImageInput from "./components/eventImagInput";
+import EventInput from "./components/eventInput";
+import { updateEventSchema } from "@/app/admin/events/edit/schema";
 
 interface EditEventProps {
   slug: string;

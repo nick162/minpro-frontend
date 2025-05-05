@@ -1,4 +1,4 @@
-import EventPage from "@/features/events";
+import EventPage from "@/features/event/getEvents";
 
 const Event = () => {
   return <EventPage />;
