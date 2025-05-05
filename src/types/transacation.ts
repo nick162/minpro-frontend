@@ -3,12 +3,6 @@ import { TransactionDetail } from "./transcationDetail";
 import { Review } from "./review";
 import { User } from "./user";
 
-export enum TransactionStatus {
-  WAITING_FOR_PAYMENT = "WAITING_FOR_PAYMENT",
-  PAID = "PAID",
-  EXPIRED = "EXPIRED",
-}
-
 export interface Transaction {
   id: number;
   userId: number;
@@ -23,4 +17,9 @@ export interface Transaction {
   event?: Event;
   transactionDetails?: TransactionDetail[];
   review?: Review | null;
+}
+enum TransactionStatus {
+  WAITING_FOR_PAYMENT = "WAITING_FOR_PAYMENT",
+  PAID = "PAID",
+  EXPIRED = "EXPIRED",
 }

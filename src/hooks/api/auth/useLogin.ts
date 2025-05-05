@@ -22,7 +22,12 @@ const useLogin = () => {
       await signIn("credentials", { ...data, redirect: false });
       toast.success("Login success");
       // onAuthSuccess({ user: data, accessToken: data.accessToken });
-      router.push("/");
+      // Redirect based on role
+      if (data.role === "EVENT_ORGANIZER") {
+        router.push("/admin/profile");
+      } else {
+        router.push("/");
+      }
     },
     onError: (error: AxiosError<any>) => {
       toast.error(error.response?.data.massage);
