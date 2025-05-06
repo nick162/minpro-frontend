@@ -11,6 +11,7 @@ const navItems = [
   { href: "/admin/tickets", label: "Tickets" },
   { href: "/admin/transactions", label: "Transactions" },
   { href: "/admin/setting", label: "Setting" },
+  { href: "/admin/attendence", label: "Attendence" },
 ];
 
 export default function Sidebar() {
