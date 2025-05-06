@@ -52,7 +52,7 @@ const ProfileForm = () => {
   return (
     <form
       onSubmit={formik.handleSubmit}
-      className="space-y-5 max-w-xl mx-auto mt-8"
+      className="space-y-5 max-w-xl mx-auto mt-8 dark:text-black"
       encType="multipart/form-data"
     >
       <ProfileImageInput

@@ -39,13 +39,11 @@ const EventItem: React.FC<Props> = ({
         <Link href={`/admin/events/edit/${event.slug}`}>
           <Button className="bg-yellow-500 hover:bg-yellow-600">Edit</Button>
         </Link>
-        <Link href={`/attendance?eventId=${event.id}`}>
-          <Button>Lihat Attendee</Button>
-        </Link>
         <Button
           variant="destructive"
           onClick={() => onDelete(event.id)}
           disabled={isDeleting}
+          className="dark:bg-orange-500"
         >
           {isDeleting ? (
             <>

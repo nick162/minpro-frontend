@@ -18,7 +18,9 @@ const ProfilePage = () => {
 
   return (
     <main className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Pengaturan Profil</h1>
+      <h1 className="text-2xl font-bold mb-4 dark:text-black">
+        Pengaturan Profil
+      </h1>
       <ProfileForm />
     </main>
   );

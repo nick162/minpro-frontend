@@ -20,7 +20,7 @@ const AdminNavbar = () => {
 
   const filteredNavLinks = navLinks.filter((link) => {
     if (role === "CUSTOMER") {
-      return link.href.includes("settings") || link.href.includes("profile");
+      return link.href.includes("Settings") || link.href.includes("Profile");
     }
     return true;
   });
@@ -28,7 +28,6 @@ const AdminNavbar = () => {
   return (
     <nav className="bg-white border-b shadow-sm px-6 py-4 relative z-50">
       <div className="flex items-center justify-between">
-        {/* Logo + Brand */}
         <div className="flex items-center space-x-3">
           <Image
             src="/logo-ehub.svg"
@@ -84,13 +83,6 @@ const AdminNavbar = () => {
 };
 
 // Semua menu
-const navLinks = [
-  { label: "Dashboard", href: "/admin/dashboard" },
-  { label: "Events", href: "/admin/events" },
-  { label: "Users", href: "/admin/users" },
-  { label: "Transactions", href: "/admin/transactions" },
-  { label: "Settings", href: "/admin/settings" },
-  { label: "Profile", href: "/admin/profile" }, // pastikan ada menu profile juga
-];
+const navLinks = [{ label: "Dashboard", href: "/admin/dashboard" }];
 
 export default AdminNavbar;

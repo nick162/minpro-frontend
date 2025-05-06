@@ -1,42 +1,22 @@
-import React, { FC } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+"use client";
 
-type Attendee = {
-  id: string;
-  name: string;
-  email: string;
-  eventName: string;
-};
+import React from "react";
 
-type Props = {
-  attendees: Attendee[];
-};
+import AttendanceTable from "@/features/event/getAttendantelist/components.tsx/AttendenceList";
+import { useAttendanceTransactions } from "@/hooks/api/Event/useGetAttendance";
 
-const AttendanceTable: FC<Props> = ({ attendees }) => {
+const AttendancePage = () => {
+  const { data, isLoading, error } = useAttendanceTransactions();
+
+  if (isLoading) return <p>Loading daftar attendee...</p>;
+  if (error) return <p>Gagal memuat data.</p>;
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4 w-[200px] md:w-[850px]">
-      {attendees.map((attendee) => (
-        <Card
-          key={attendee.id}
-          className="bg-gradient-to-br from-indigo-100 to-blue-50 shadow-md"
-        >
-          <CardContent className="p-4">
-            <h3 className="text-lg font-semibold text-indigo-700 mb-2">
-              {attendee.name}
-            </h3>
-            <p className="text-sm text-gray-700">
-              <span className="font-medium text-gray-900">Email:</span>{" "}
-              {attendee.email}
-            </p>
-            <p className="text-sm text-gray-700">
-              <span className="font-medium text-gray-900">Event:</span>{" "}
-              {attendee.eventName}
-            </p>
-          </CardContent>
-        </Card>
-      ))}
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Semua Attendee</h1>
+      <AttendanceTable attendees={data.attendees} />
     </div>
   );
 };
 
-export default AttendanceTable;
+export default AttendancePage;

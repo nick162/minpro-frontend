@@ -1,9 +1,10 @@
 "use client"; // This will ensure the component is rendered on the client side
 
 import React from "react";
-import EditTicketForm from "../../ticketform/EditTicketForm";
+
 import { useGetTicketById } from "@/hooks/api/ticket/useGetTicketById";
 import useAxios from "@/hooks/useAxios";
+import EditTicketForm from "@/features/tickets/update/components/EditTicketForm";
 
 export default function EditTicketPage({
   params,
@@ -11,10 +12,9 @@ export default function EditTicketPage({
   params: Promise<{ id: string }>;
 }) {
   useAxios();
-  const resolvedParams = React.use(params); // ✅ Unwrap the params promise
+  const resolvedParams = React.use(params);
   const ticketId = parseInt(resolvedParams.id, 10);
 
-  // Use the hook to get ticket data
   const { data: ticket, isLoading, error } = useGetTicketById(ticketId);
 
   // Handle loading and error states

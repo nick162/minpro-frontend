@@ -13,20 +13,22 @@ import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { ModeToggle } from "./ToogleDarkMode";
-
-const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/events", label: "Events" },
-  { href: "/services", label: "Services" },
-  { href: "/gallery", label: "Gallery" },
-  { href: "/contact", label: "Contact" },
-];
 
 const Navbar: FC = () => {
   const router = useRouter();
   const session = useSession();
+  const role = session.data?.user?.role;
+
+  const navLinks = useMemo(() => {
+    if (role === "EVENT_ORGANIZER") {
+      return [{ href: "/admin/profile", label: "Setting" }];
+    } else if (role === "CUSTOMER") {
+      return [{ href: "/user/profile", label: "Setting" }];
+    }
+    return [];
+  }, [role]);
 
   const logout = () => {
     signOut();
@@ -36,19 +38,19 @@ const Navbar: FC = () => {
   return (
     <nav className="fixed container m-auto p-4 z-100 left-0 right-0">
       <div className="flex justify-between items-center">
-        {/* Logo */}
-        <div className="logo-event">
-          <Link href="/">
-            <Image
-              src="/assets/header/logo.svg"
-              width={80}
-              height={45}
-              alt="logo"
-              priority
-              className="cursor-pointer"
-            />
-          </Link>
+        <div className="flex items-center space-x-3">
+          <Image
+            src="/logo-ehub.svg"
+            alt="INDOEVENTHUB Logo"
+            width={40}
+            height={40}
+          />
+          <h1 className="text-xl font-bold text-blue-700 tracking-wide">
+            <Link href="/">INDOEVENTHUB</Link>
+          </h1>
         </div>
+
+        <ModeToggle />
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6 font-semibold">
@@ -62,9 +64,6 @@ const Navbar: FC = () => {
             </Link>
           ))}
         </div>
-
-        {/* Dark Mode Toggle */}
-        <ModeToggle />
 
         {/* Desktop Actions */}
         <div className="hidden md:flex gap-3">

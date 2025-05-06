@@ -1,21 +1,16 @@
-"use client";
-
-import { ProtectedRoute } from "@/components/ProtectedRoute";
 import ProfilePage from "@/features/profile/page";
-import { useSession } from "next-auth/react";
+import { auth } from "@/lib/auth";
 
-const ProfileSettingPage = () => {
-  const session = useSession();
-  // console.log("jjs", session.data?.user.accessToken);
-  // console.log("jjs", session.data?.user.role);
+import { redirect } from "next/navigation";
+
+const ProfileSettingPage = async () => {
+  const session = await auth();
+  if (session?.user.role !== "EVENT_ORGANIZER") redirect("/");
   return (
-    // <ProtectedRoute allowedRoles="EVENT_ORGANIZER">
     <div className="max-w-xl mx-auto mt-10">
-      <h1 className="text-2xl font-bold mb-6">Edit Profil</h1>
+      <h1 className="text-2xl font-bold mb-6 dark:text-black">Edit Profil</h1>
       <ProfilePage />
     </div>
-    //{" "}
-    // </ProtectedRoute>
   );
 };
 

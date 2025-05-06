@@ -18,6 +18,7 @@ export interface Transaction {
   transactionDetails?: TransactionDetail[];
   review?: Review | null;
 }
+
 enum TransactionStatus {
   WAITING_FOR_PAYMENT = "WAITING_FOR_PAYMENT",
   PAID = "PAID",

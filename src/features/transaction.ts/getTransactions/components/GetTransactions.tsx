@@ -18,23 +18,23 @@ const GetTransactions = () => {
 
   return (
     <div className="p-4 sm:p-6">
-      <h1 className="text-2xl font-bold mb-6 text-center sm:text-left">
+      <h1 className="text-2xl font-bold mb-6 text-center sm:text-left dark:text-black">
         Transaction List
       </h1>
 
       {data && data.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-4 ">
           {data.map((tx) => (
             <Card
               key={tx.id}
               className="shadow-md border border-gray-200 hover:shadow-lg transition duration-200"
             >
               <CardHeader>
-                <CardTitle className="text-base break-words">
+                <CardTitle className="text-base break-words dark:text-white">
                   Transaction ID: {tx.id}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2 text-sm text-gray-700">
+              <CardContent className="space-y-2 text-sm text-gray-700 dark:text-white">
                 <p>
                   <span className="font-semibold">User:</span> {tx.user?.name} (
                   {tx.user?.email})

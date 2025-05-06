@@ -1,23 +1,15 @@
-// app/admin/attendance/page.tsx
-"use client";
+import AttendancePage from "@/features/event/getAttendantelist";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-import React from "react";
-
-import AttendanceTable from "@/features/event/getAttendantelist";
-import { useAttendanceTransactions } from "@/hooks/api/Event/useGetAttendance";
-
-const AttendancePage = () => {
-  const { data, isLoading, error } = useAttendanceTransactions();
-
-  if (isLoading) return <p>Loading daftar attendee...</p>;
-  if (error) return <p>Gagal memuat data.</p>;
-
+const AdminAttendancePage = async () => {
+  const session = await auth();
+  if (session?.user.role !== "EVENT_ORGANIZER") redirect("/");
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Semua Attendee</h1>
-      <AttendanceTable attendees={data.attendees} />
+    <div>
+      <AttendancePage />
     </div>
   );
 };
 
-export default AttendancePage;
+export default AdminAttendancePage;
