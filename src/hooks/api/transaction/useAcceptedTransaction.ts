@@ -10,7 +10,7 @@ export const useAcceptTransaction = () => {
 
   return useMutation({
     mutationFn: async (id: number) => {
-      const { data } = await axiosInstance.post(`/transaction/accept/${id}`);
+      const { data } = await axiosInstance.patch(`/transaction/accept/${id}`);
       return data;
     },
     onSuccess: () => {

@@ -43,6 +43,7 @@ const EventItem: React.FC<Props> = ({
           variant="destructive"
           onClick={() => onDelete(event.id)}
           disabled={isDeleting}
+          className="dark:bg-orange-500"
         >
           {isDeleting ? (
             <>
