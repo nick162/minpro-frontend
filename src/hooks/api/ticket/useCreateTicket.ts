@@ -47,7 +47,7 @@ const useCreateTicket = () => {
     onSuccess: () => {
       toast.success("Ticket created successfully");
       queryClient.invalidateQueries({ queryKey: ["tickets"] });
-      router.push("/admin/ticketsw");
+      router.push("/admin/tickets");
     },
     onError: (error) => {
       const message = error.response?.data?.message || error.message;

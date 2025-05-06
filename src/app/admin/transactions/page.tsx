@@ -1,15 +1,17 @@
+import { auth } from "@/lib/auth";
 import AdminTransactionPage from "./components/UpdateTransaction";
 import GetTransactionPage from "@/features/transaction.ts/getTransactions";
+import { redirect } from "next/navigation";
 
-export default function TransactionsPage() {
+const TransactionsPage = async () => {
+  const session = await auth();
+  if (!session) redirect("/login");
   return (
-    // <ProtectedRoute allowedRoles="EVENT_ORGANIZER">
     <div>
       <h1 className="text-2xl font-bold mb-4 dark:text-black">Transactions</h1>
       <p className="dark:text-black">Manage your transactions here</p>
       <GetTransactionPage />
       <AdminTransactionPage />
     </div>
-    // </ProtectedRoute>
   );
-}
+};
