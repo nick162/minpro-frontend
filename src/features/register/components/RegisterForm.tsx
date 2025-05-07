@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RegisterSchema } from "../schema";
 import { useRegister } from "@/hooks/api/auth/useRegister";
+import Image from "next/image";
 
 export default function RegisterForm() {
   const [showReferral, setShowReferral] = useState(false);
@@ -41,8 +42,8 @@ export default function RegisterForm() {
   });
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="bg-white shadow-lg rounded-2xl overflow-hidden flex flex-col md:flex-row w-full max-w-4xl">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 px-4">
+      <div className="bg-white dark:bg-gray-800 shadow-lg rounded-2xl overflow-hidden flex flex-col md:flex-row w-full max-w-4xl">
         {/* Gambar Kiri */}
         <div className="md:w-1/2 hidden md:flex items-center justify-center">
           <img
@@ -54,14 +55,16 @@ export default function RegisterForm() {
 
         {/* Form Kanan */}
         <div className="w-full md:w-1/2 p-8">
-          <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">
+          <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800 dark:text-white">
             Create Your Account
           </h2>
 
           <form onSubmit={formik.handleSubmit} className="space-y-4">
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name" className="text-gray-700 dark:text-white">
+                  Name
+                </Label>
                 <Input
                   id="name"
                   name="name"
@@ -71,14 +74,21 @@ export default function RegisterForm() {
                   value={formik.values.name}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
+                  className="bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
                 />
                 {!!formik.touched.name && !!formik.errors.name && (
                   <p className="text-xs text-red-500">{formik.errors.name}</p>
                 )}
               </div>
             </div>
+
             <div className="grid gap-2">
-              <Label htmlFor="username">Username</Label>
+              <Label
+                htmlFor="username"
+                className="text-gray-700 dark:text-white"
+              >
+                Username
+              </Label>
               <Input
                 id="username"
                 type="text"
@@ -88,32 +98,40 @@ export default function RegisterForm() {
                 value={formik.values.username}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                className="bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
               />
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  name="email"
-                  placeholder="m@example.com"
-                  required
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                {!!formik.touched.email && !!formik.errors.email && (
-                  <p className="text-xs text-red-500">{formik.errors.email}</p>
-                )}
-              </div>
               {!!formik.touched.username && !!formik.errors.username && (
                 <p className="text-xs text-red-500">{formik.errors.username}</p>
               )}
             </div>
 
             <div className="grid gap-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-              </div>
+              <Label htmlFor="email" className="text-gray-700 dark:text-white">
+                Email
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                name="email"
+                placeholder="m@example.com"
+                required
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className="bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
+              />
+              {!!formik.touched.email && !!formik.errors.email && (
+                <p className="text-xs text-red-500">{formik.errors.email}</p>
+              )}
+            </div>
+
+            <div className="grid gap-2">
+              <Label
+                htmlFor="password"
+                className="text-gray-700 dark:text-white"
+              >
+                Password
+              </Label>
               <Input
                 id="password"
                 name="password"
@@ -123,6 +141,7 @@ export default function RegisterForm() {
                 value={formik.values.password}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                className="bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
               />
               {!!formik.touched.password && !!formik.errors.password && (
                 <p className="text-xs text-red-500">{formik.errors.password}</p>
@@ -133,7 +152,7 @@ export default function RegisterForm() {
             <button
               type="button"
               onClick={() => setShowRoleSelect(!showRoleSelect)}
-              className="text-sm text-blue-600 hover:underline"
+              className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
             >
               {showRoleSelect ? "Hide Role Selection" : "Choose Role"}
             </button>
@@ -144,7 +163,7 @@ export default function RegisterForm() {
                 name="role"
                 value={formik.values.role}
                 onChange={formik.handleChange}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="CUSTOMER">CUSTOMER</option>
                 <option value="EVENT_ORGANIZER">ORGANIZER</option>
@@ -152,11 +171,10 @@ export default function RegisterForm() {
             )}
 
             {/* Tombol Referral */}
-            <br />
             <button
               type="button"
               onClick={() => setShowReferral(!showReferral)}
-              className="text-sm text-blue-600 hover:underline"
+              className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
             >
               {showReferral ? "Hide Referral Code" : "Have a Referral Code?"}
             </button>
@@ -170,7 +188,7 @@ export default function RegisterForm() {
                 value={formik.values.referralCode}
                 onChange={formik.handleChange}
                 disabled={formik.values.role === "EVENT_ORGANIZER"}
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             )}
 

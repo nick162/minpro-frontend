@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 const TransactionsPage = async () => {
   const session = await auth();
-  if (!session) redirect("/login");
+  if (session?.user.role !== "EVENT_ORGANIZER") redirect("/login");
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4 dark:text-black">Transactions</h1>
@@ -15,3 +15,5 @@ const TransactionsPage = async () => {
     </div>
   );
 };
+
+export default TransactionsPage;

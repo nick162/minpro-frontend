@@ -36,7 +36,7 @@ const Navbar: FC = () => {
   };
 
   return (
-    <nav className="fixed container m-auto p-4 z-100 left-0 right-0">
+    <nav className="container m-auto p-4 left-0 right-0">
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-3">
           <Image

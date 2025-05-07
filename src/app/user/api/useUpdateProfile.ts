@@ -3,6 +3,7 @@ import { UpdateProfilePayload } from "@/types/updateProfile";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export const useUpdateProfile = () => {
   const { data: session, update } = useSession();
@@ -47,14 +48,6 @@ export const useUpdateProfile = () => {
 
     onSuccess: async (data) => {
       toast.success("Profil berhasil diperbarui");
-
-      console.log("data to load sign in");
-      console.log(data);
-      // Simpan token baru ke localStorage
-      localStorage.setItem("accessToken", data.token);
-
-      // Update session user data
-      // await (data.user);
       await signIn("credentials", { ...data, redirect: false });
     },
 

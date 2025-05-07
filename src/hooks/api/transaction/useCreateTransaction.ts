@@ -1,5 +1,6 @@
+"use client";
 import { useState } from "react";
-import useAxios from "@/hooks/useAxios"; // ← pastikan path sesuai
+import useAxios from "@/hooks/useAxios";
 
 interface CreateTransactionInput {
   userId: number;
@@ -16,6 +17,7 @@ interface UseCreateTransactionResult {
   loading: boolean;
   error: string | null;
   success: boolean;
+  resetState: () => void;
 }
 
 export const useCreateTransaction = (): UseCreateTransactionResult => {
@@ -23,29 +25,56 @@ export const useCreateTransaction = (): UseCreateTransactionResult => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  const { axiosInstance } = useAxios(); // ← gunakan custom axios
+  const { axiosInstance } = useAxios();
+
+  const resetState = () => {
+    setLoading(false);
+    setError(null);
+    setSuccess(false);
+  };
 
   const createTransaction = async (
     input: CreateTransactionInput
   ): Promise<number | null> => {
+    if (!input.userId || !input.eventId || !input.ticketId || !input.quantity) {
+      setError("Missing required fields for transaction");
+      return null;
+    }
+
     setLoading(true);
     setError(null);
     setSuccess(false);
 
     try {
       const response = await axiosInstance.post("/transaction", input);
-      console.log("Transaction response:", response.data);
+      console.log("Full transaction response:", response);
 
-      const transactionId = response.data.transactionId;
+      // Coba ambil transactionId dari berbagai kemungkinan bentuk response
+      const transactionId =
+        response.data?.transactionId ?? response.data?.data?.id ?? null;
 
-      setSuccess(true);
-      return transactionId;
-    } catch (err: any) {
-      if (err.response?.data?.message) {
-        setError(err.response.data.message);
+      if (transactionId) {
+        setSuccess(true);
+        console.log("Transaction ID created:", transactionId); // Debug log
+
+        return transactionId;
       } else {
-        setError("Terjadi kesalahan saat membuat transaksi.");
+        throw new Error("Transaction ID is missing in response");
       }
+    } catch (err: any) {
+      if (err.response) {
+        const serverMessage =
+          err.response.data?.message || err.response.statusText;
+        setError(`Server error: ${serverMessage}`);
+      } else if (err.request) {
+        setError("No response from server. Please check your connection.");
+      } else {
+        setError(
+          err.message || "An error occurred while creating the transaction"
+        );
+      }
+
+      console.error("Transaction error:", err);
       return null;
     } finally {
       setLoading(false);
@@ -57,5 +86,6 @@ export const useCreateTransaction = (): UseCreateTransactionResult => {
     loading,
     error,
     success,
+    resetState,
   };
 };

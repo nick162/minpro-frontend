@@ -1,11 +1,12 @@
 import GetTransactionById from "@/features/transaction.ts/getTransactions/components/GetTransactionById";
 
-interface Props {
-  params: { id: string };
-}
-
-const TransactionPage = ({ params }: Props) => {
-  return <GetTransactionById transactionId={params.id} />;
+const TransactionPage = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
+  const id = (await params).id;
+  return <GetTransactionById transactionId={id} />;
 };
 
 export default TransactionPage;
